@@ -1,20 +1,26 @@
-# Todo App — Full-Stack Case Study
+# Games Tracker App — Full-Stack Case Study
 
-A full-stack Todo app built with React, Express, and Postgres. Demonstrates session-based authentication, session rehydration, auth-dependent data fetching, and conditional rendering — the same patterns students use in their full-stack projects.
+A full-stack Games Tracker app built with React, Express, and Postgres. Demonstrates session-based authentication, session rehydration, auth-dependent data fetching, and conditional rendering — the same patterns students use in their full-stack projects.
+
+# Mission
+
+Website is for users to keep track of video games the user desires.
 
 ## User Stories
 
 **Auth**
+
 - A user can register for an account with a username and password
 - A user can log in to an existing account
 - A user can log out
 - A returning user who has an active session is automatically logged in when they revisit the app
 
-**Todos**
-- A logged-in user can see all of their todos
-- A logged-in user can create a new todo by entering a title
-- A logged-in user can mark a todo as complete or incomplete
-- A logged-in user can delete a todo
+**Games**
+
+- A logged-in user can see all of their games
+- A logged-in user can create a new game by entering a title,platform,status
+- A logged-in user can mark a game as complete,dropped,wishlist,in progress
+- A logged-in user can delete a game
 
 ## Schema
 
@@ -25,15 +31,18 @@ user_id       SERIAL PRIMARY KEY
 username      TEXT UNIQUE NOT NULL
 password_hash TEXT NOT NULL
 
-todos
+games
 ─────────────────────────────
-todo_id     SERIAL PRIMARY KEY
+game_id     SERIAL PRIMARY KEY
 title       TEXT NOT NULL
-is_complete BOOLEAN DEFAULT FALSE
+platform    TEXT
+status      TEXT DEFAULT "In Progress"
+note        TEXT
+url_img     TEXT
 user_id     INTEGER REFERENCES users(user_id) ON DELETE CASCADE
 ```
 
-A user has many todos. Deleting a user cascades to delete all of their todos.
+A user has many games. Deleting a user cascades to delete all of their games.
 
 ## API Contract
 
@@ -48,12 +57,12 @@ A user has many todos. Deleting a user cascades to delete all of their todos.
 
 ### Todo endpoints (all require authentication)
 
-| Method | Endpoint              | Request Body      | Response                                     |
-| ------ | --------------------- | ----------------- | -------------------------------------------- |
-| GET    | `/api/todos`          | —                 | `[{ todo_id, title, is_complete, user_id }]` |
-| POST   | `/api/todos`          | `{ title }`       | `{ todo_id, title, is_complete, user_id }`   |
-| PATCH  | `/api/todos/:todo_id` | `{ is_complete }` | `{ todo_id, title, is_complete, user_id }`   |
-| DELETE | `/api/todos/:todo_id` | —                 | `{ todo_id, title, is_complete, user_id }`   |
+| Method | Endpoint              | Request Body | Response                                                   |
+| ------ | --------------------- | ------------ | ---------------------------------------------------------- |
+| GET    | `/api/games`          | —            | `[{ game_id,title,platform,status,note,url_img,user_id }]` |
+| POST   | `/api/games`          | `{ title }`  | `{game_id,title,platform,status,note,url_img,user_id }`    |
+| PATCH  | `/api/games/:game_id` | `{ status }` | `{ game_id,title,platform,status,note,url_img,user_id}`    |
+| DELETE | `/api/games/:game_id` | —            | `{ game_id,title,platform,status,note,url_img,user_id }`   |
 
 ## Setup
 
@@ -62,7 +71,7 @@ A user has many todos. Deleting a user cascades to delete all of their todos.
 Create a local Postgres database:
 
 ```sh
-createdb todos_casestudy
+createdb game_Tracker
 ```
 
 ### 2. Server
