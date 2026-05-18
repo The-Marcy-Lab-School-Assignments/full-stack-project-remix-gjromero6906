@@ -6,7 +6,7 @@ require('dotenv').config();
 const logRoutes = require('./middleware/logRoutes');
 const checkAuthentication = require('./middleware/checkAuthentication');
 const authControllers = require('./controllers/authControllers');
-const todoControllers = require('./controllers/todoControllers');
+const gameControllers = require('./controllers/gameControllers');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -41,13 +41,13 @@ app.get('/api/auth/me', authControllers.getMe);
 app.delete('/api/auth/logout', authControllers.logout);
 
 // ====================================
-// Todo routes (all require authentication)
+// Game routes (all require authentication)
 // ====================================
 
-app.get('/api/todos', checkAuthentication, todoControllers.listTodos);
-app.post('/api/todos', checkAuthentication, todoControllers.createTodo);
-app.patch('/api/todos/:todo_id', checkAuthentication, todoControllers.updateTodo);
-app.delete('/api/todos/:todo_id', checkAuthentication, todoControllers.deleteTodo);
+app.get('/api/games', checkAuthentication, gameControllers.listGames);
+app.post('/api/games', checkAuthentication, gameControllers.createGame);
+app.patch('/api/games/:game_id', checkAuthentication, gameControllers.updateGame);
+app.delete('/api/games/:game_id', checkAuthentication, gameControllers.deleteGame);
 
 // ====================================
 // Global Error Handler

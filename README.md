@@ -55,7 +55,7 @@ A user has many games. Deleting a user cascades to delete all of their games.
 | DELETE | `/api/auth/logout`   | —                        | `{ message }`                     |
 | GET    | `/api/auth/me`       | —                        | `{ user_id, username }` or `null` |
 
-### Todo endpoints (all require authentication)
+### Game endpoints (all require authentication)
 
 | Method | Endpoint              | Request Body | Response                                                   |
 | ------ | --------------------- | ------------ | ---------------------------------------------------------- |
@@ -120,28 +120,28 @@ After running `npm run db:seed`, these accounts are available:
 ## Application Structure
 
 ```
-swe-casestudy-7-todo-app/
+swe-casestudy-7-game-app/
 ├── frontend/               # React app (Vite)
 │   ├── src/
 │   │   ├── App.jsx         # Root component: currentUser state, session rehydration, auth handlers
 │   │   ├── adapters/
 │   │   │   ├── auth-adapters.js  # Fetch adapters for /api/auth/* endpoints
-│   │   │   └── todo-adapters.js  # Fetch adapters for /api/todos/* endpoints
+│   │   │   └── game-adapters.js  # Fetch adapters for /api/games/* endpoints
 │   │   └── components/
 │   │       ├── AuthPage.jsx    # Login + Register forms (shown when logged out)
-│   │       ├── TodoPage.jsx    # Main app container (shown when logged in)
-│   │       ├── AddTodoForm.jsx # Form to create a new todo
-│   │       ├── TodoList.jsx    # Renders a list of TodoItems
-│   │       └── TodoItem.jsx    # Single todo: checkbox, title, delete button
+│   │       ├── GamePage.jsx    # Main app container (shown when logged in)
+│   │       ├── AddGameForm.jsx # Form to create a new game
+│   │       ├── GameList.jsx    # Renders a list of GameItems
+│   │       └── GameItem.jsx    # Single game: checkbox, title, delete button
 │   └── vite.config.js      # Proxies /api requests to Express in development
 └── server/                 # Express + Postgres API
     ├── index.js            # App entry point, route definitions
     ├── controllers/
     │   ├── authControllers.js  # register, login, logout, getMe
-    │   └── todoControllers.js  # list, create, update, delete todos
+    │   └── gameControllers.js  # list, create, update, delete games
     ├── models/
     │   ├── userModel.js    # SQL queries for the users table
-    │   └── todoModel.js    # SQL queries for the todos table
+    │   └── gameModel.js    # SQL queries for the games table
     ├── middleware/
     │   ├── checkAuthentication.js  # Blocks unauthenticated requests
     │   └── logRoutes.js            # Logs each incoming request
