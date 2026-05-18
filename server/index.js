@@ -16,7 +16,14 @@ const PORT = process.env.PORT || 8080;
 // ====================================
 
 app.use(logRoutes);
-app.use(cookieSession({ name: 'session', secret: process.env.SESSION_SECRET }));
+app.use(
+  cookieSession({
+    name: 'session',
+    keys: [process.env.SESSION_SECRET],
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+  })
+);
 app.use(express.json());
 
 // In production, serve the built React app from frontend/dist.
@@ -48,9 +55,23 @@ app.delete('/api/todos/:todo_id', checkAuthentication, todoControllers.deleteTod
 
 const handleError = (err, req, res, next) => {
   console.error(err);
-  res.status(500).send({ message: 'Internal Server Error' });
+  if (res.headersSent) return next(err);
+
+  const isDatabaseError = Boolean(err?.code || err?.severity || err?.routine);
+  if (isDatabaseError) {
+    return res.status(500).send({ message: 'Internal Server Error' });
+  }
+
+  res.status(err.status || 500).send({ message: err.message || 'Internal Server Error' });
 };
 app.use(handleError);
+
+// ====================================
+// Fallback route for client-side routing
+// ====================================
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+});
 
 // ====================================
 // Listen
