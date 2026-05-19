@@ -1,9 +1,14 @@
 const handleFetch = async (url, options = {}) => {
   try {
     const response = await fetch(url, options);
-    if (!response.ok) throw new Error(`Fetch failed. ${response.status} ${response.statusText}`);
-    const data = await response.json();
-    return { data, error: null };
+    const payload = await response.json().catch(() => null);
+
+    if (!response.ok) {
+      const errorMessage = payload?.error || payload?.message || `${response.status} ${response.statusText}`;
+      return { data: null, error: new Error(errorMessage) };
+    }
+
+    return { data: payload, error: null };
   } catch (error) {
     return { data: null, error };
   }
@@ -13,11 +18,11 @@ export const fetchAllGames = async () => {
   return handleFetch('/api/games');
 };
 
-export const createGame = async (title) => {
+export const createGame = async (game) => {
   return handleFetch('/api/games', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title }),
+    body: JSON.stringify(game),
   });
 };
 

@@ -11,9 +11,12 @@ module.exports.listGames = async (req, res, next) => {
 
 module.exports.createGame = async (req, res, next) => {
   try {
-    const { title } = req.body;
+    const { title, platform, status, notes, url_img } = req.body;
     if (!title) return res.status(400).send({ error: 'Title is required.' });
-    const game = await gameModel.create(title, req.session.user_id);
+    const game = await gameModel.create(
+      { title, platform, status, notes, url_img },
+      req.session.user_id
+    );
     res.status(201).send(game);
   } catch (err) {
     next(err);

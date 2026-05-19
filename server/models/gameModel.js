@@ -15,16 +15,36 @@ module.exports.find = async (game_id) => {
 };
 
 // Creates a new game. Returns the full game row.
-module.exports.create = async (title, user_id) => {
-  const query = 'INSERT INTO games (title, user_id) VALUES ($1, $2) RETURNING *';
-  const { rows } = await pool.query(query, [title, user_id]);
+module.exports.create = async (game, user_id) => {
+  const query = `INSERT INTO games
+    (title, platform, status, notes, url_img, user_id)
+    VALUES ($1, $2, $3, $4, $5, $6)
+    RETURNING *`;
+  const { rows } = await pool.query(query, [
+    game.title,
+    game.platform,
+    game.status || 'Playing',
+    game.notes,
+    game.url_img,
+    user_id,
+  ]);
   return rows[0];
 };
 
-// Updates is_complete for a game. Returns the updated row.
-module.exports.update = async (game_id, { is_complete }) => {
-  const query = 'UPDATE games SET is_complete = $1 WHERE game_id = $2 RETURNING *';
-  const { rows } = await pool.query(query, [is_complete, game_id]);
+// Updates a game row using only allowed fields. Returns the updated row.
+module.exports.update = async (game_id, updates) => {
+  const allowedFields = ['title', 'platform', 'status', 'notes', 'url_img', 'is_complete'];
+  const entries = Object.entries(updates).filter(([key]) => allowedFields.includes(key));
+  if (entries.length === 0) {
+    return this.find(game_id);
+  }
+
+  const setters = entries.map(([key], index) => `${key} = $${index + 1}`).join(', ');
+  const values = entries.map(([, value]) => value);
+  values.push(game_id);
+
+  const query = `UPDATE games SET ${setters} WHERE game_id = $${values.length} RETURNING *`;
+  const { rows } = await pool.query(query, values);
   return rows[0];
 };
 

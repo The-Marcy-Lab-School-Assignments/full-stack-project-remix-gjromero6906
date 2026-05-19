@@ -8,10 +8,6 @@ function GamePage({ currentUser, handleLogout }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // This helper fetches games on page load with useEffect
-  // It is also used within the AddGameForm and GameList
-  // to re-fetch the games when a mutation action is performed
-  // such as creating, deleting, or updating a game.
   const loadGames = async () => {
     setIsLoading(true);
     setError(null);
@@ -29,14 +25,20 @@ function GamePage({ currentUser, handleLogout }) {
   }, []);
 
   return (
-    <section>
+    <section id="game-page">
       <div id="user-controls">
-        <span>Welcome, <strong>{currentUser.username}</strong>!</span>
+        <div>
+          <p>Welcome back, <strong>{currentUser.username}</strong>.</p>
+          <p className="subtitle">Add, track, and delete your games in one place.</p>
+        </div>
         <button onClick={handleLogout}>Log Out</button>
       </div>
+
       <AddGameForm loadGames={loadGames} />
-      {isLoading && <p>Loading games...</p>}
+
+      {isLoading && <p className="status-message">Loading games...</p>}
       {error && <p className="error">Something went wrong: {error}</p>}
+
       <GameList games={games} loadGames={loadGames} />
     </section>
   );
