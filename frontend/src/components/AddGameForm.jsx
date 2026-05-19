@@ -4,7 +4,7 @@ import { createGame } from '../adapters/game-adapters';
 function AddGameForm({ loadGames }) {
   const [formState, setFormState] = useState({
     title: '',
-    platform: '',
+    platform: 'PC',
     status: 'Playing',
     notes: '',
     url_img: '',
@@ -49,13 +49,19 @@ function AddGameForm({ loadGames }) {
         value={formState.title}
         onChange={handleChange}
       />
-      <input
-        type="text"
+      <label htmlFor="platform" className="sr-only">Platform</label>
+      <select
+        id="platform"
         name="platform"
-        placeholder="Platform (e.g. PC, Switch)"
         value={formState.platform}
         onChange={handleChange}
-      />
+      >
+        <option value="PC">PC</option>
+        <option value="Playstation">Playstation</option>
+        <option value="Xbox">Xbox</option>
+        <option value="Nintendo">Nintendo</option>
+        <option value="VR">VR</option>
+      </select>
       <label htmlFor="status" className="sr-only">Status</label>
       <select
         id="status"

@@ -14,6 +14,7 @@ function GameItem({ game, loadGames }) {
   };
 
   const statusOptions = ['Playing', 'Wishlist', 'Backlog', 'Completed', 'Dropped'];
+  const platforms =[`PC`,`Playstation`,`Xbox`,`Nintendo`,`VR`]
 
   const handleStatusChange = async (event) => {
     const status = event.target.value;
@@ -35,7 +36,17 @@ function GameItem({ game, loadGames }) {
         <div className="game-header">
           <div>
             <h3>{game.title}</h3>
-            <p className="game-meta">{game.platform || 'Platform unknown'}</p>
+            <select
+              className="platform-select"
+              value={game.platform || 'PC'}
+              onChange={handlePlatformChange}
+            >
+              {platforms.map((platform) => (
+                <option key={platform} value={platform}>
+                  {platform}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
             <span className={`badge badge-${game.status?.toLowerCase() || 'playing'}`}>
@@ -56,7 +67,7 @@ function GameItem({ game, loadGames }) {
         <div className="progress-row">
           <span className="progress-label">Completion</span>
           <div className="progress-bar">
-            <div className="progress-fill" style={{ width: game.is_complete ? '100%' : '33%' }} />
+            <div className="progress-fill" style={{ width: game.is_complete ? '100%' : '5%' }} />
           </div>
         </div>
         <div className="game-actions">
