@@ -28,7 +28,7 @@ function GamePage({ currentUser, handleLogout }) {
     <section id="game-page">
         <div id="user-controls">
         <div className="user-info">
-          <span>Welcome back</span>
+          <p className="welcome-text">Welcome back, <span>{currentUser?.username}</span></p>
         </div>
 
         <button className="logout-btn" onClick={handleLogout}>
