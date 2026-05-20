@@ -22,7 +22,15 @@ function GameItem({ game, loadGames }) {
     if (error) return console.error(error);
     loadGames();
   };
+  const handlePlatformChange = async (event) => {
+    const platform = event.target.value;
 
+    const { error } = await updateGame(game.game_id, { platform });
+
+    if (error) return console.error(error);
+
+    loadGames();
+  };
   return (
     <li className={`game-item ${!game.url_img ? 'no-image' : ''}`}>
       <div className="game-card-image">
@@ -36,29 +44,30 @@ function GameItem({ game, loadGames }) {
         <div className="game-header">
           <div>
             <h3>{game.title}</h3>
-            <select
-              className="platform-select"
-              value={game.platform || 'PC'}
-              onChange={handlePlatformChange}
-            >
-              {platforms.map((platform) => (
-                <option key={platform} value={platform}>
-                  {platform}
-                </option>
-              ))}
-            </select>
+            <div className="platform-select-wrapper">
+              <select
+                className={`platform-select platform-${(game.platform || 'PC').toLowerCase()}`}
+                value={game.platform || 'PC'}
+                onChange={handlePlatformChange}
+              >
+                {platforms.map((platform) => (
+                  <option key={platform} value={platform}>
+                    {platform}
+                  </option>
+                ))}
+              </select>
           </div>
-          <div>
-            <span className={`badge badge-${game.status?.toLowerCase() || 'playing'}`}>
-              {game.status || 'Playing'}
-            </span>
+          </div>
+          <div className="status-select-wrapper">
             <select
-              className="status-select"
+              className={`status-select status-${(game.status || 'Playing').toLowerCase()}`}
               value={game.status || 'Playing'}
               onChange={handleStatusChange}
             >
               {statusOptions.map((option) => (
-                <option key={option} value={option}>{option}</option>
+                <option key={option} value={option}>
+                  {option}
+                </option>
               ))}
             </select>
           </div>

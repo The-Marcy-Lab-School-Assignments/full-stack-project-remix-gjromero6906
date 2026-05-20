@@ -298,7 +298,410 @@ form button[type='submit'],
 /* =========================
    RESPONSIVE
 ========================= */
+/* =========================
+   GAME CARD
+========================= */
 
+.game-item {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 1rem;
+
+  padding: 1.35rem;
+
+  border-radius: var(--radius-xl);
+
+  background: linear-gradient(
+    180deg,
+    rgba(8, 15, 30, 0.96),
+    rgba(15, 23, 42, 0.98)
+  );
+
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  box-shadow: var(--shadow-card);
+
+  transition: transform 0.2s ease;
+
+  align-items: stretch;
+}
+
+.game-item:hover {
+  transform: translateY(-4px);
+}
+
+/* =========================
+   IMAGE
+========================= */
+
+.game-card-image {
+  width: 100%;
+  height: 180px;
+
+  border-radius: 20px;
+  overflow: hidden;
+
+  background: rgba(15, 23, 42, 0.9);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* actual image */
+.game-card-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  display: block;
+}
+
+/* =========================
+   DETAILS
+========================= */
+
+.game-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.game-header h3 {
+  font-size: 1.15rem;
+}
+
+/* =========================
+   BADGES
+========================= */
+
+.badge {
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge-playing { background: #38bdf8; }
+.badge-wishlist { background: #fbbf24; }
+.badge-backlog { background: #8b5cf6; }
+.badge-completed { background: #22c55e; }
+.badge-dropped { background: #ef4444; }
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress-bar {
+  height: 10px;
+  background: rgba(148, 163, 184, 0.14);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--accent-blue),
+    var(--accent-purple)
+  );
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.game-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: auto;
+}
+
+/* dropdowns styled as buttons */
+.game-actions select {
+  width: auto;
+  min-width: 140px;
+
+  padding: 0.8rem 2.5rem 0.8rem 1rem;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0ea5e9,
+      var(--accent-cyan)
+    );
+
+  color: white;
+
+  border: 1px solid rgba(209, 250, 251, 0.25);
+  border-radius: 999px;
+
+  font-weight: 600;
+
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.25);
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+
+  appearance: none;
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg fill='white' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.5 7.5l4.5 5 4.5-5z'/%3E%3C/svg%3E"),
+    linear-gradient(135deg, #0ea5e9, var(--accent-cyan));
+
+  background-repeat: no-repeat, no-repeat;
+  background-position: right 0.9rem center, center;
+  background-size: 1rem, cover;
+
+  cursor: pointer;
+}
+
+.game-actions select:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(34, 211, 238, 0.35);
+}
+
+.game-actions select option {
+  background: #0f172a;
+  color: white;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.empty-state-card {
+  padding: 2rem;
+  text-align: center;
+}
+/* STATUS DROPDOWN BUTTON */
+
+.status-select-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.status-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  border: none;
+  outline: none;
+
+  padding: 0.7rem 2.6rem 0.7rem 1rem;
+
+  border-radius: 999px;
+
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+
+  color: white;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+
+  background-repeat: no-repeat;
+  background-position:
+    right 0.8rem center,
+    center;
+
+  background-size:
+    0.9rem,
+    cover;
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg fill='white' height='18' viewBox='0 0 20 20' width='18' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.5 7.5l4.5 5 4.5-5z'/%3E%3C/svg%3E");
+}
+
+/* COLORS */
+
+.status-playing {
+  background-color: #38bdf8;
+}
+
+.status-wishlist {
+  background-color: #fbbf24;
+}
+
+.status-backlog {
+  background-color: #8b5cf6;
+}
+
+.status-completed {
+  background-color: #22c55e;
+}
+
+.status-dropped {
+  background-color: #ef4444;
+}
+
+.status-select:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+}
+
+.status-select option {
+  background: #0f172a;
+  color: white;
+}
+/* PLATFORM DROPDOWN BUTTON */
+
+.platform-select-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-top: 0.4rem;
+}
+
+.platform-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  border: none;
+  outline: none;
+
+  padding: 0.65rem 2.5rem 0.65rem 1rem;
+
+  border-radius: 999px;
+
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+
+  color: white;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+
+  background-repeat: no-repeat;
+  background-position:
+    right 0.8rem center,
+    center;
+
+  background-size:
+    0.9rem,
+    cover;
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg fill='white' height='18' viewBox='0 0 20 20' width='18' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.5 7.5l4.5 5 4.5-5z'/%3E%3C/svg%3E");
+}
+
+/* PLATFORM COLORS */
+
+.platform-pc {
+  background: linear-gradient(135deg, #2563eb, #38bdf8);
+}
+
+.platform-playstation {
+  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+}
+
+.platform-xbox {
+  background: linear-gradient(135deg, #15803d, #22c55e);
+}
+
+.platform-nintendo {
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+}
+
+.platform-vr {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+}
+
+.platform-select:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+}
+
+.platform-select option {
+  background: #0f172a;
+  color: white;
+}
+/* USER CONTROLS */
+
+#user-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 1rem;
+
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* LEFT SIDE */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* LOGOUT BUTTON */
+
+.logout-btn {
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+
+  color: white;
+
+  border: none;
+  border-radius: 999px;
+
+  padding: 0.8rem 1.2rem;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.logout-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 10px 22px rgba(239, 68, 68, 0.35);
+}
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 640px) {
+  .game-item {
+    grid-template-columns: 1fr;
+  }
+
+  .game-card-image {
+    height: 220px;
+  }
+
+  .game-actions {
+    flex-direction: column;
+  }
+
+  .game-actions select,
+  .game-actions button {
+    width: 100%;
+  }
+}
 @media (max-width: 640px) {
   .game-item {
     grid-template-columns: 1fr;

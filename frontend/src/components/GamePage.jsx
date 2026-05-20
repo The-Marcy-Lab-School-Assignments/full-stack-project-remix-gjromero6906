@@ -26,12 +26,14 @@ function GamePage({ currentUser, handleLogout }) {
 
   return (
     <section id="game-page">
-      <div id="user-controls">
-        <div>
-          <p>Welcome back, <strong>{currentUser.username}</strong>.</p>
-          <p className="subtitle">Add, track, and delete your games in one place.</p>
+        <div id="user-controls">
+        <div className="user-info">
+          <span>Welcome back</span>
         </div>
-        <button onClick={handleLogout}>Log Out</button>
+
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
 
       <AddGameForm loadGames={loadGames} />
