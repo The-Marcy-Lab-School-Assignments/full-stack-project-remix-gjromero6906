@@ -1,6 +1,7 @@
 const handleFetch = async (url, options = {}) => {
   try {
-    const response = await fetch(url, options);
+    const fetchOptions = { credentials: 'include', ...options };
+    const response = await fetch(url, fetchOptions);
     const payload = await response.json().catch(() => null);
 
     if (!response.ok) {
