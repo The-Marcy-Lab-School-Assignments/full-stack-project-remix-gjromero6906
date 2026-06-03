@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require('express');
 const cookieSession = require('cookie-session');
+const cors = require('cors');
 require('dotenv').config();
 
 const logRoutes = require('./middleware/logRoutes');
@@ -20,11 +21,22 @@ app.use(
   cookieSession({
     name: 'session',
     keys: [process.env.SESSION_SECRET],
-    sameSite: 'lax',
+    // If FRONTEND_ORIGIN is set (frontend served from different origin),
+    // use 'none' to allow cross-site cookies and ensure `secure` is true in production.
+    sameSite: process.env.FRONTEND_ORIGIN ? 'none' : 'lax',
     secure: process.env.NODE_ENV === 'production',
   })
 );
 app.use(express.json());
+
+// Enable CORS when FRONTEND_ORIGIN is set so the browser can send cookies.
+// If FRONTEND_ORIGIN is not set, allow all origins for convenience in simple deploys.
+app.use(
+  cors({
+    origin: process.env.FRONTEND_ORIGIN || true,
+    credentials: true,
+  })
+);
 
 // In production, serve the built React app from frontend/dist.
 // In development, Vite's dev server handles the frontend on a separate port
