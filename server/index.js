@@ -12,22 +12,17 @@ const gameControllers = require('./controllers/gameControllers');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+const sessionSecret = process.env.SESSION_SECRET || (process.env.NODE_ENV === 'production' ? null : 'development-secret');
+if (!sessionSecret) {
+  console.error('ERROR: SESSION_SECRET is not set. Add it to your Render environment variables.');
+  process.exit(1);
+}
+
 // ====================================
 // Middleware
 // ====================================
 
 app.use(logRoutes);
-app.use(
-  cookieSession({
-    name: 'session',
-    keys: [process.env.SESSION_SECRET],
-    // If FRONTEND_ORIGIN is set (frontend served from different origin),
-    // use 'none' to allow cross-site cookies and ensure `secure` is true in production.
-    sameSite: process.env.FRONTEND_ORIGIN ? 'none' : 'lax',
-    secure: process.env.NODE_ENV === 'production',
-  })
-);
-app.use(express.json());
 
 // Enable CORS when FRONTEND_ORIGIN is set so the browser can send cookies.
 // If FRONTEND_ORIGIN is not set, allow all origins for convenience in simple deploys.
@@ -37,6 +32,19 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(
+  cookieSession({
+    name: 'session',
+    keys: [sessionSecret],
+    httpOnly: true,
+    // If FRONTEND_ORIGIN is set (frontend served from different origin),
+    // use 'none' to allow cross-site cookies and ensure `secure` is true in production.
+    sameSite: process.env.FRONTEND_ORIGIN ? 'none' : 'lax',
+    secure: process.env.NODE_ENV === 'production',
+  })
+);
+app.use(express.json());
 
 // In production, serve the built React app from frontend/dist.
 // In development, Vite's dev server handles the frontend on a separate port
