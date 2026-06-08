@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production node index.js",
+    "start": "npm run build --prefix ../frontend && NODE_ENV=production node index.js",
     "build": "npm install --prefix ../frontend && npm run build --prefix ../frontend",
-    "dev": "nodemon index.js",
+    "dev": "npm run build --prefix ../frontend && nodemon index.js",
     "db:seed": "node db/seed.js"
   },
   "dependencies": {
