@@ -45,7 +45,7 @@ function RegisterForm({ handleRegister }) {
     e.preventDefault();
     const error = await handleRegister(username, password);
     if (error) {
-      setErrorMessage('Could not register. Username may already be taken.');
+      setErrorMessage(error.message || 'Could not register. Please try a different username.');
     }
   };
 

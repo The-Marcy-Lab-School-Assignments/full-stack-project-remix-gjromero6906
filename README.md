@@ -1,20 +1,26 @@
-# Todo App — Full-Stack Case Study
+# Games Tracker App — Full-Stack Case Study
 
-A full-stack Todo app built with React, Express, and Postgres. Demonstrates session-based authentication, session rehydration, auth-dependent data fetching, and conditional rendering — the same patterns students use in their full-stack projects.
+A full-stack Games Tracker app built with React, Express, and Postgres. Demonstrates session-based authentication, session rehydration, auth-dependent data fetching, and conditional rendering — the same patterns students use in their full-stack projects.
+
+# Mission
+
+Website is for users to keep track of video games the user desires.
 
 ## User Stories
 
 **Auth**
+
 - A user can register for an account with a username and password
 - A user can log in to an existing account
 - A user can log out
 - A returning user who has an active session is automatically logged in when they revisit the app
 
-**Todos**
-- A logged-in user can see all of their todos
-- A logged-in user can create a new todo by entering a title
-- A logged-in user can mark a todo as complete or incomplete
-- A logged-in user can delete a todo
+**Games**
+
+- A logged-in user can see all of their games
+- A logged-in user can create a new game by entering a title,platform,status
+- A logged-in user can mark a game as complete,dropped,wishlist,in progress
+- A logged-in user can delete a game
 
 ## Schema
 
@@ -25,15 +31,18 @@ user_id       SERIAL PRIMARY KEY
 username      TEXT UNIQUE NOT NULL
 password_hash TEXT NOT NULL
 
-todos
+games
 ─────────────────────────────
-todo_id     SERIAL PRIMARY KEY
+game_id     SERIAL PRIMARY KEY
 title       TEXT NOT NULL
-is_complete BOOLEAN DEFAULT FALSE
+platform    TEXT
+status      TEXT DEFAULT "In Progress"
+note        TEXT
+url_img     TEXT
 user_id     INTEGER REFERENCES users(user_id) ON DELETE CASCADE
 ```
 
-A user has many todos. Deleting a user cascades to delete all of their todos.
+A user has many games. Deleting a user cascades to delete all of their games.
 
 ## API Contract
 
@@ -46,14 +55,14 @@ A user has many todos. Deleting a user cascades to delete all of their todos.
 | DELETE | `/api/auth/logout`   | —                        | `{ message }`                     |
 | GET    | `/api/auth/me`       | —                        | `{ user_id, username }` or `null` |
 
-### Todo endpoints (all require authentication)
+### Game endpoints (all require authentication)
 
-| Method | Endpoint              | Request Body      | Response                                     |
-| ------ | --------------------- | ----------------- | -------------------------------------------- |
-| GET    | `/api/todos`          | —                 | `[{ todo_id, title, is_complete, user_id }]` |
-| POST   | `/api/todos`          | `{ title }`       | `{ todo_id, title, is_complete, user_id }`   |
-| PATCH  | `/api/todos/:todo_id` | `{ is_complete }` | `{ todo_id, title, is_complete, user_id }`   |
-| DELETE | `/api/todos/:todo_id` | —                 | `{ todo_id, title, is_complete, user_id }`   |
+| Method | Endpoint              | Request Body | Response                                                   |
+| ------ | --------------------- | ------------ | ---------------------------------------------------------- |
+| GET    | `/api/games`          | —            | `[{ game_id,title,platform,status,note,url_img,user_id }]` |
+| POST   | `/api/games`          | `{ title }`  | `{game_id,title,platform,status,note,url_img,user_id }`    |
+| PATCH  | `/api/games/:game_id` | `{ status }` | `{ game_id,title,platform,status,note,url_img,user_id}`    |
+| DELETE | `/api/games/:game_id` | —            | `{ game_id,title,platform,status,note,url_img,user_id }`   |
 
 ## Setup
 
@@ -62,7 +71,7 @@ A user has many todos. Deleting a user cascades to delete all of their todos.
 Create a local Postgres database:
 
 ```sh
-createdb todos_casestudy
+createdb game_Tracker
 ```
 
 ### 2. Server
@@ -111,28 +120,28 @@ After running `npm run db:seed`, these accounts are available:
 ## Application Structure
 
 ```
-swe-casestudy-7-todo-app/
+swe-casestudy-7-game-app/
 ├── frontend/               # React app (Vite)
 │   ├── src/
 │   │   ├── App.jsx         # Root component: currentUser state, session rehydration, auth handlers
 │   │   ├── adapters/
 │   │   │   ├── auth-adapters.js  # Fetch adapters for /api/auth/* endpoints
-│   │   │   └── todo-adapters.js  # Fetch adapters for /api/todos/* endpoints
+│   │   │   └── game-adapters.js  # Fetch adapters for /api/games/* endpoints
 │   │   └── components/
 │   │       ├── AuthPage.jsx    # Login + Register forms (shown when logged out)
-│   │       ├── TodoPage.jsx    # Main app container (shown when logged in)
-│   │       ├── AddTodoForm.jsx # Form to create a new todo
-│   │       ├── TodoList.jsx    # Renders a list of TodoItems
-│   │       └── TodoItem.jsx    # Single todo: checkbox, title, delete button
+│   │       ├── GamePage.jsx    # Main app container (shown when logged in)
+│   │       ├── AddGameForm.jsx # Form to create a new game
+│   │       ├── GameList.jsx    # Renders a list of GameItems
+│   │       └── GameItem.jsx    # Single game: checkbox, title, delete button
 │   └── vite.config.js      # Proxies /api requests to Express in development
 └── server/                 # Express + Postgres API
     ├── index.js            # App entry point, route definitions
     ├── controllers/
     │   ├── authControllers.js  # register, login, logout, getMe
-    │   └── todoControllers.js  # list, create, update, delete todos
+    │   └── gameControllers.js  # list, create, update, delete games
     ├── models/
     │   ├── userModel.js    # SQL queries for the users table
-    │   └── todoModel.js    # SQL queries for the todos table
+    │   └── gameModel.js    # SQL queries for the games table
     ├── middleware/
     │   ├── checkAuthentication.js  # Blocks unauthenticated requests
     │   └── logRoutes.js            # Logs each incoming request

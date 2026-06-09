@@ -15,26 +15,26 @@ const handleFetch = async (url, options = {}) => {
   }
 };
 
-export const getMe = async () => {
-  return handleFetch('/api/auth/me');
+export const fetchAllGames = async () => {
+  return handleFetch('/api/games');
 };
 
-export const register = async (username, password) => {
-  return handleFetch('/api/auth/register', {
+export const createGame = async (game) => {
+  return handleFetch('/api/games', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify(game),
   });
 };
 
-export const login = async (username, password) => {
-  return handleFetch('/api/auth/login', {
-    method: 'POST',
+export const updateGame = async (game_id, updates) => {
+  return handleFetch(`/api/games/${game_id}`, {
+    method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify(updates),
   });
 };
 
-export const logout = async () => {
-  return handleFetch('/api/auth/logout', { method: 'DELETE' });
+export const deleteGame = async (game_id) => {
+  return handleFetch(`/api/games/${game_id}`, { method: 'DELETE' });
 };

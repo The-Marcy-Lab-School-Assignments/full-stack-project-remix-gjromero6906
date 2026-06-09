@@ -1,0 +1,15 @@
+{
+  "name": "full-stack-project-remix-gjromero6906",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "bootstrap": "npm install --prefix frontend && npm install --prefix server",
+    "build": "npm run bootstrap && npm run build --prefix frontend",
+    "start": "npm start --prefix server",
+    "dev": "npm run bootstrap && concurrently \"npm run dev --prefix frontend\" \"npm run dev --prefix server\"",
+    "postinstall": "npm run bootstrap"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

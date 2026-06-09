@@ -4,8 +4,8 @@ const pool = require('./pool');
 const SALT_ROUNDS = 8;
 
 const seed = async () => {
-  // Drop tables in reverse dependency order (todos references users via FK)
-  await pool.query('DROP TABLE IF EXISTS todos');
+  // Drop tables in reverse dependency order (games references users via FK)
+  await pool.query('DROP TABLE IF EXISTS games');
   await pool.query('DROP TABLE IF EXISTS users');
 
   await pool.query(`
@@ -17,9 +17,13 @@ const seed = async () => {
   `);
 
   await pool.query(`
-    CREATE TABLE todos (
-      todo_id     SERIAL PRIMARY KEY,
+    CREATE TABLE games (
+      game_id     SERIAL PRIMARY KEY,
       title       TEXT NOT NULL,
+      platform    TEXT,
+      status      TEXT DEFAULT 'Playing',
+      notes       TEXT,
+      url_img     TEXT,
       is_complete BOOLEAN NOT NULL DEFAULT FALSE,
       user_id     INT REFERENCES users(user_id) ON DELETE CASCADE
     )
@@ -42,13 +46,10 @@ const seed = async () => {
   const [alice, bob] = users;
 
   await pool.query(`
-    INSERT INTO todos (title, is_complete, user_id) VALUES
-      ('Buy groceries',        FALSE, $1),
-      ('Walk the dog',         FALSE, $1),
-      ('Read a book',          TRUE,  $1),
-      ('Set up the database',  TRUE,  $2),
-      ('Build the API',        TRUE,  $2),
-      ('Build the frontend',   FALSE, $2)
+    INSERT INTO games (title, platform, status, notes, url_img, is_complete, user_id) VALUES
+      ('Elden Ring', 'PC', 'Playing', 'Beat Malenia', 'https://images.igdb.com/igdb/image/upload/t_cover_big/co1r5a.jpg', FALSE, $1),
+      ('Celeste', 'Switch', 'Completed', 'Finish all B-sides', 'https://images.igdb.com/igdb/image/upload/t_cover_big/co1vzv.jpg', TRUE, $1),
+      ('Hollow Knight', 'PC', 'Wishlist', 'Explore the White Palace', 'https://images.igdb.com/igdb/image/upload/t_cover_big/co1vbb.jpg', FALSE, $2)
   `, [alice.user_id, bob.user_id]);
 
   return users;
