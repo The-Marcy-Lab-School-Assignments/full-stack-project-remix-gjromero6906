@@ -26,22 +26,22 @@ app.use(logRoutes);
 
 // Enable CORS when FRONTEND_ORIGIN is set so the browser can send cookies.
 // If FRONTEND_ORIGIN is not set, allow all origins for convenience in simple deploys.
-app.use(
-  cors({
-    origin: process.env.FRONTEND_ORIGIN || true,
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: process.env.FRONTEND_ORIGIN || true,
+//     credentials: true,
+//   })
+// );
 
 app.use(
   cookieSession({
     name: 'session',
     keys: [sessionSecret],
-    httpOnly: true,
+    //httpOnly: true,
     // If FRONTEND_ORIGIN is set (frontend served from different origin),
     // use 'none' to allow cross-site cookies and ensure `secure` is true in production.
-    sameSite: process.env.FRONTEND_ORIGIN ? 'none' : 'lax',
-    secure: process.env.NODE_ENV === 'production',
+    //sameSite: process.env.FRONTEND_ORIGIN ? 'none' : 'lax',
+    //secure: process.env.NODE_ENV === 'production',
   })
 );
 app.use(express.json());
